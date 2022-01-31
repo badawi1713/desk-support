@@ -1,8 +1,8 @@
 {
-  "name": "server",
+  "name": "support-desk",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Support ticket app",
+  "main": "server.js",
   "scripts": {
     "start": "node backend/server.js",
     "server": "nodemon backend/server.js",
@@ -10,7 +10,7 @@
   },
   "keywords": [],
   "author": "Dzaky badawi",
-  "license": "MIT",
+  "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
