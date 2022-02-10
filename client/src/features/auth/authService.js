@@ -16,8 +16,28 @@ const register = async (userData) => {
   }
 };
 
+// Login user
+const login = async (userData) => {
+  const response = await axios.post(`${BASE_URL}/login`, userData);
+  if (response?.data) {
+    toast.success(response.data.message);
+    localStorage.setItem("user", JSON.stringify(response?.data?.object));
+    history.push("/");
+    return response.data;
+  }
+};
+
+const logout = async () => {
+  localStorage.removeItem("user");
+  localStorage.removeItem("jwt_access_token");
+  toast.success("You have logged out");
+  history.push("/login");
+};
+
 const authService = {
   register,
+  logout,
+  login
 };
 
 export default authService;
