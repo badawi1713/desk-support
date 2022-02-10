@@ -1,3 +1,3 @@
 import Header from "./Header";
-
-export { Header };
+import HistoryRouter from "./HistoryRouter"
+export { Header, HistoryRouter };
