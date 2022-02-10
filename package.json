@@ -1,22 +1,35 @@
 {
-  "name": "support-desk",
+  "name": "desk-support",
   "version": "1.0.0",
-  "description": "Support ticket app",
+  "description": "desk-support for ticketing app",
   "main": "server.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "server": "nodemon backend/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server/server.js",
+    "server": "nodemon server/server.js",
+    "client": "npm start --prefix client",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npm run server\" \"npm run client\" "
   },
-  "keywords": [],
-  "author": "Dzaky badawi",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/badawi1713/desk-support.git"
+  },
+  "author": "dzaky.badawi@gmail.com",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/badawi1713/desk-support/issues"
+  },
+  "homepage": "https://github.com/badawi1713/desk-support#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
+    "concurrently": "^7.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^14.3.2",
     "express": "^4.17.2",
-    "mongoose": "^6.1.8"
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
