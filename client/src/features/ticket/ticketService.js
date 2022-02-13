@@ -1,11 +1,10 @@
 import { toast } from "react-toastify";
 import { Api } from "utils/api";
 import { history } from "utils/history";
-const BASE_URL = `${process.env.REACT_APP_BASE_URL}/v1/tickets`;
 
 const createNewTicket = async (ticketData) => {
-  console.log(ticketData)
-  const response = await Api.post(`${BASE_URL}/`, ticketData);
+  console.log(ticketData);
+  const response = await Api.post(`/v1/tickets/`, ticketData);
   if (response?.data) {
     toast.success(response?.data?.message);
     history.push("/tickets");
@@ -14,15 +13,34 @@ const createNewTicket = async (ticketData) => {
 };
 
 const getTickets = async () => {
-  const response = await Api.get(`${BASE_URL}/`);
+  const response = await Api.get(`/v1/tickets/`);
   if (response?.data) {
     return response.data;
+  }
+};
+
+const getTicketDetail = async (id) => {
+  const response = await Api.get(`/v1/tickets/${id}`);
+  if (response?.data) {
+    return response?.data;
+  }
+};
+
+const closeTicket = async (id) => {
+  const response = await Api.put(`/v1/tickets/${id}`, {
+    status: 'closed'
+  });
+  console.log(response)
+  if (response?.data) {
+    return response?.data;
   }
 };
 
 const ticketService = {
   createNewTicket,
   getTickets,
+  getTicketDetail,
+  closeTicket
 };
 
 export default ticketService;

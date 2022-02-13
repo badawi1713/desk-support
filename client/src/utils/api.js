@@ -4,7 +4,7 @@ import jwtDecode from "jwt-decode";
 import { getToken } from "./token";
 
 export const Api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: process.env.REACT_APP_BASE_URL,
   mode: "no-cors",
   credentials: true,
   crossdomain: true,

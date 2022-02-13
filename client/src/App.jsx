@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { Header, PrivateRoute } from "./components";
-import { Home, Login, NewTicket, Page404, Register, Ticket } from "./pages";
+import { Home, Login, NewTicket, Page404, Register, Ticket, TicketDetail } from "./pages";
 const App = () => {
 
   return (
@@ -17,6 +17,9 @@ const App = () => {
           </Route>
           <Route path="/tickets" element={<PrivateRoute />}>
             <Route path="/tickets" element={<Ticket />} />
+          </Route>
+          <Route path="/ticket/:id" element={<PrivateRoute />}>
+            <Route path="/ticket/:id" element={<TicketDetail />} />
           </Route>
           <Route path="*" element={<Page404 />} />
         </Routes>

@@ -4,4 +4,5 @@ import NewTicket from "./NewTicket";
 import Register from "./Register";
 import Ticket from "./Ticket";
 import Page404 from "./Page404";
-export { Home, Page404, NewTicket, Ticket, Login, Register };
+import TicketDetail from "./TicketDetail";
+export { Home, TicketDetail, Page404, NewTicket, Ticket, Login, Register };

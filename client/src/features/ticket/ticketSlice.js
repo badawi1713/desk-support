@@ -39,6 +39,34 @@ export const getTickets = createAsyncThunk(
   }
 );
 
+export const getTicketDetail = createAsyncThunk(
+  "ticket/get-detail",
+
+  async (id, thunkAPI) => {
+    try {
+      return await ticketService.getTicketDetail(id);
+    } catch (error) {
+      const message =
+        error?.response?.data?.message || error?.message || error?.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const closeTicket = createAsyncThunk(
+  "ticket/close",
+
+  async (id, thunkAPI) => {
+    try {
+      return await ticketService.closeTicket(id);
+    } catch (error) {
+      const message =
+        error?.response?.data?.message || error?.message || error?.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const ticketSlice = createSlice({
   name: "ticket",
   initialState: initialState,
@@ -65,7 +93,8 @@ export const ticketSlice = createSlice({
       .addCase(getTickets.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
-      }).addCase(getTickets.fulfilled, (state, action) => {
+      })
+      .addCase(getTickets.fulfilled, (state, action) => {
         state.isLoading = false;
         state.tickets = action?.payload?.object?.tickets;
       })
@@ -75,7 +104,39 @@ export const ticketSlice = createSlice({
         state.message = action.payload;
         state.isSuccess = false;
         toast.error(action.payload);
-    })
+      })
+      .addCase(getTicketDetail.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(getTicketDetail.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.ticket = action?.payload?.object?.ticket;
+      })
+      .addCase(getTicketDetail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        state.isSuccess = false;
+        toast.error(action.payload);
+      })
+      .addCase(closeTicket.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(closeTicket.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.tickets?.map(item => item._id === action.payload?.object?.ticket?._id ? item.status = 'closed' : item)
+        state.ticket.status = 'closed';
+        toast.success('Ticket has been closed');
+      })
+      .addCase(closeTicket.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        state.isSuccess = false;
+        toast.error(action.payload);
+      });
   },
 });
 
