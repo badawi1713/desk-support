@@ -10,14 +10,15 @@ export const Api = axios.create({
   crossdomain: true,
 });
 
-export const AxiosSetup = async (store) => {
+export const AxiosSetup = (store) => {
   const { dispatch } = store;
-  const token = await getToken();
-  const expiredToken = token ? jwtDecode(token).exp : null;
-  const currentDate = new Date().getTime() / 1000;
+
 
   Api.interceptors.request.use(
     async (request) => {
+      const token = await getToken();
+      const expiredToken = token ? jwtDecode(token).exp : null;
+      const currentDate = new Date().getTime() / 1000;
       if (expiredToken < currentDate) {
         dispatch(sessionExpired());
       }
