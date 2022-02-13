@@ -1,12 +1,15 @@
 import { login } from 'features/auth/authSlice'
+import { useAuthStatus } from 'hooks/useAuthStatus'
 import React, { useState } from 'react'
 import { FaSignInAlt } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
+import { Navigate } from 'react-router-dom'
 
 const Login = () => {
+  const { loggedIn } = useAuthStatus()
 
   const dispatch = useDispatch()
-  const { isLoading,  } = useSelector(state => state.auth)
+  const { isLoading, } = useSelector(state => state.auth)
 
   const [formData, setFormData] = useState({
     email: '',
@@ -24,8 +27,7 @@ const Login = () => {
     e.preventDefault()
     dispatch(login({ email, password }))
   }
-
-  return (
+  return loggedIn ? <Navigate to='/' /> : (
     <>
       <section className="heading">
         <h1>

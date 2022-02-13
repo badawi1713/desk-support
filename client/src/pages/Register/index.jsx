@@ -1,12 +1,16 @@
 import { register } from 'features/auth/authSlice'
+import { useAuthStatus } from 'hooks/useAuthStatus'
 import React, { useState } from 'react'
 import { FaUser } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
+import { Navigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 const Register = () => {
+
     const dispatch = useDispatch()
-    const {isLoading  } = useSelector(state => state.auth)
+    const { isLoading } = useSelector(state => state.auth)
+    const { loggedIn } = useAuthStatus()
 
     const [formData, setFormData] = useState({
         name: '',
@@ -38,7 +42,7 @@ const Register = () => {
         }
     }
 
-    return (
+    return loggedIn ? <Navigate to='/' /> : (
         <>
             <section className="heading">
                 <h1>

@@ -4,11 +4,14 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AxiosSetup } from "utils/api";
 import { history } from "utils/history";
 import App from "./App";
-import { store } from "./app/store";
+import store from "./app/store";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
+
+AxiosSetup(store)
 
 ReactDOM.render(
   <React.StrictMode>

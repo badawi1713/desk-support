@@ -40,6 +40,14 @@ export const logout = createAsyncThunk("auth/logout", async () => {
   await authService.logout();
 });
 
+export const sessionExpired = createAsyncThunk("auth/token-expired", async () => {
+  await authService.sessionExpired();
+});
+
+export const invalidToken = createAsyncThunk("auth/token-invalid", async () => {
+  await authService.invalidToken();
+});
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -86,6 +94,12 @@ export const authSlice = createSlice({
         state.isSuccess = false;
       })
       .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+      })
+      .addCase(sessionExpired.fulfilled, (state) => {
+        state.user = null;
+      })
+      .addCase(invalidToken.fulfilled, (state) => {
         state.user = null;
     })
   },

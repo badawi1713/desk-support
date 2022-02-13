@@ -29,15 +29,28 @@ const login = async (userData) => {
 
 const logout = async () => {
   localStorage.removeItem("user");
-  localStorage.removeItem("jwt_access_token");
   toast.success("You have logged out");
+  history.push("/login");
+};
+
+const sessionExpired = async () => {
+  localStorage.removeItem("user");
+  toast.error("Your session has been expired");
+  history.push("/login");
+};
+
+const invalidToken = async () => {
+  localStorage.removeItem("user");
+  toast.error("Invalid Token");
   history.push("/login");
 };
 
 const authService = {
   register,
   logout,
-  login
+  login,
+  sessionExpired,
+  invalidToken
 };
 
 export default authService;
