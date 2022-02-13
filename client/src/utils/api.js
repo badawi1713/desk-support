@@ -1,9 +1,8 @@
 import axios from "axios";
-import { sessionExpired } from "features/auth/authSlice";
+import { invalidToken, sessionExpired } from "features/auth/authSlice";
 import jwtDecode from "jwt-decode";
 import { getToken } from "./token";
 
-// main config axios
 export const Api = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   mode: "no-cors",
@@ -19,7 +18,9 @@ export const AxiosSetup = async (store) => {
 
   Api.interceptors.request.use(
     async (request) => {
-      const token = await getToken();
+      if (expiredToken < currentDate) {
+        dispatch(sessionExpired());
+      }
 
       request.headers.common["Authorization"] = `Bearer ${token}`;
       return request;
@@ -34,20 +35,13 @@ export const AxiosSetup = async (store) => {
   );
   Api.interceptors.response.use(
     function (response) {
-      //Dispatch any action on success
       return response;
     },
     function (error) {
-      if (expiredToken < currentDate) {
-        dispatch(sessionExpired());
-      }
       if (error.response.status === 401) {
-        dispatch(sessionExpired());
-        //Add Logic to
-        //1. Redirect to login page or
-        //2. Request refresh token
+        dispatch(invalidToken());
       }
-     
+
       return Promise.reject(error);
     }
   );
