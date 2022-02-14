@@ -7,8 +7,10 @@ const {
   deleteOneTicket,
 } = require("../controllers/ticketController");
 const { protect } = require("../middleware/authMiddleware");
+const noteRouter = require("./noteRoutes");
 const router = express.Router();
 
+router.use('/:ticketId/notes', noteRouter)
 router.route("/").get(protect, getTickets).post(protect, createTicket);
 
 router

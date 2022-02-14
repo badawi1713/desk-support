@@ -5,20 +5,24 @@ const asyncHandler = require("express-async-handler");
 
 const getTickets = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
+  const { page = 0, limit = 5 } = req.query;
 
   if (!user) {
     res.status(401);
     throw new Error("user not found!");
   }
-
-  const ticket = await Ticket.find({ user: req.user.id });
+  const count = await Ticket.countDocuments();
+  const ticket = await Ticket.find({ user: req.user.id })
+    .limit(parseInt(limit))
+    .skip(page * limit)
+    .sort('-status');
 
   res.status(200).json({
     object: {
       tickets: ticket,
     },
-    length: ticket.length,
-    message: "get all tickets",
+    total: count,
+    message: "Success to get all tickets",
   });
 });
 
@@ -78,7 +82,7 @@ const getTicketDetail = asyncHandler(async (req, res) => {
 const updateTicket = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const userId = req.user.id;
- 
+
   const ticket = await Ticket.findById(id);
 
   if (!ticket) {
@@ -91,12 +95,9 @@ const updateTicket = asyncHandler(async (req, res) => {
     throw new Error("Unauthorized user!");
   }
 
-  let docTicket = await Ticket.findOneAndUpdate(
-      { _id: id },
-      req.body,
-      {new: true}
-
-  );
+  let docTicket = await Ticket.findOneAndUpdate({ _id: id }, req.body, {
+    new: true,
+  });
 
   res.status(200).json({
     message: "Ticket is updated",
