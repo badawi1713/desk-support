@@ -1,12 +1,10 @@
-import axios from "axios";
 import { toast } from "react-toastify";
+import { Api } from "utils/api";
 import { history } from "utils/history";
-
-const BASE_URL = `${process.env.REACT_APP_BASE_URL}/v1/users`;
 
 // Register user
 const register = async (userData) => {
-  const response = await axios.post(`${BASE_URL}/register`, userData);
+  const response = await Api.post(`/v1/users/register`, userData);
 
   if (response?.data) {
     toast.success(response.data.message);
@@ -18,7 +16,7 @@ const register = async (userData) => {
 
 // Login user
 const login = async (userData) => {
-  const response = await axios.post(`${BASE_URL}/login`, userData);
+  const response = await Api.post(`/v1/users/login`, userData);
   if (response?.data) {
     toast.success(response.data.message);
     localStorage.setItem("user", JSON.stringify(response?.data?.object));
@@ -50,7 +48,7 @@ const authService = {
   logout,
   login,
   sessionExpired,
-  invalidToken
+  invalidToken,
 };
 
 export default authService;

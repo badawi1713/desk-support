@@ -10,19 +10,14 @@ export const Api = axios.create({
   crossdomain: true,
 });
 
-export const AxiosSetup = (store) => {
+export const AxiosSetup = async (store) => {
   const { dispatch } = store;
-
+  const token = await getToken();
+  const expiredToken = token ? jwtDecode(token).exp : null;
+  const currentDate = new Date().getTime() / 1000;
 
   Api.interceptors.request.use(
     async (request) => {
-      const token = await getToken();
-      const expiredToken = token ? jwtDecode(token).exp : null;
-      const currentDate = new Date().getTime() / 1000;
-      if (expiredToken < currentDate) {
-        dispatch(sessionExpired());
-      }
-
       request.headers.common["Authorization"] = `Bearer ${token}`;
       return request;
     },
@@ -35,10 +30,13 @@ export const AxiosSetup = (store) => {
     }
   );
   Api.interceptors.response.use(
-    function (response) {
+    (response) => {
       return response;
     },
-    function (error) {
+    (error) => {
+      if (expiredToken < currentDate) {
+        dispatch(sessionExpired());
+      }
       if (error.response.status === 401) {
         dispatch(invalidToken());
       }

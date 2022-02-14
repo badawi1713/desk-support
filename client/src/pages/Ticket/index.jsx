@@ -5,13 +5,17 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const Ticket = () => {
   const dispatch = useDispatch()
-  const { tickets } = useSelector(state => state.ticket)
+  const { tickets, isLoading } = useSelector(state => state.ticket)
   useEffect(() => {
     const getTicketData = () => {
       dispatch(getTickets())
     }
     return getTicketData()
   }, [dispatch])
+
+  if (isLoading) {
+    return <p>Loading</p>
+  }
 
   return (
     <>

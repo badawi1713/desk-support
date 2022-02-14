@@ -12,8 +12,8 @@ const createNewTicket = async (ticketData) => {
   }
 };
 
-const getTickets = async () => {
-  const response = await Api.get(`/v1/tickets/`);
+const getTickets = async (page, limit) => {
+  const response = await Api.get(`/v1/tickets/?page=${page}&limit=${limit}`);
   if (response?.data) {
     return response.data;
   }
