@@ -4,7 +4,7 @@ import { history } from "utils/history";
 
 const createNewTicket = async (ticketData) => {
   console.log(ticketData);
-  const response = await Api.post(`/service/v1/tickets/`, ticketData);
+  const response = await Api.post(`/service/api/v1/tickets/`, ticketData);
   if (response?.data) {
     toast.success(response?.data?.message);
     history.push("/tickets");
@@ -13,21 +13,21 @@ const createNewTicket = async (ticketData) => {
 };
 
 const getTickets = async (page, limit) => {
-  const response = await Api.get(`/service/v1/tickets/?page=${page}&limit=${limit}`);
+  const response = await Api.get(`/service/api/v1/tickets/?page=${page}&limit=${limit}`);
   if (response?.data) {
     return response.data;
   }
 };
 
 const getTicketDetail = async (id) => {
-  const response = await Api.get(`/service/v1/tickets/${id}`);
+  const response = await Api.get(`/service/api/v1/tickets/${id}`);
   if (response?.data) {
     return response?.data;
   }
 };
 
 const closeTicket = async (id) => {
-  const response = await Api.put(`/service/v1/tickets/${id}`, {
+  const response = await Api.put(`/service/api/v1/tickets/${id}`, {
     status: 'closed'
   });
   console.log(response)
