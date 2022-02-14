@@ -1,9 +1,26 @@
 import { BackButton, NoteItem } from 'components'
-import { getNotes } from 'features/notes/notesSlice'
+import { createNotes, getNotes } from 'features/notes/notesSlice'
 import { closeTicket, getTicketDetail } from 'features/ticket/ticketSlice'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import { FaPlus, FaTimes } from 'react-icons/fa'
+import Modal from 'react-modal'
+
+const customStyles = {
+    content: {
+        width: '600px',
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        position: 'relative',
+    },
+}
+
+Modal.setAppElement('#root')
 
 const TicketDetail = () => {
     const { id } = useParams()
@@ -11,6 +28,9 @@ const TicketDetail = () => {
     const dispatch = useDispatch()
     const { ticket } = useSelector(state => state.ticket)
     const { notes, isLoading: notesLoading } = useSelector(state => state.notes)
+
+    const [modalIsOpen, setModalIsOpen] = useState(false)
+    const [noteText, setNoteText] = useState('')
 
     useEffect(() => {
         dispatch(getTicketDetail(id))
@@ -20,6 +40,17 @@ const TicketDetail = () => {
     const onTicketClose = () => {
         dispatch(closeTicket(id))
         navigate('/tickets')
+    }
+
+    const openModal = () => setModalIsOpen(true)
+    const closeModal = () => setModalIsOpen(false)
+
+    const onNoteSubmit = async (e) => {
+        e.preventDefault()
+        await dispatch(createNotes({ text: noteText, id: id }))
+        await dispatch(getNotes(id))
+        await setNoteText('')
+        await closeModal()
     }
 
     if (notesLoading) {
@@ -43,6 +74,41 @@ const TicketDetail = () => {
                 <h3>Description of Issue</h3>
                 <p>{ticket.description}</p>
             </section>
+            {ticket.status !== 'closed' && (
+                <button onClick={openModal} className='btn'>
+                    <FaPlus /> Add Note
+                </button>
+            )}
+
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                style={customStyles}
+                contentLabel='Add Note'
+            >
+                <h2>Add Note</h2>
+                <button className='btn-close' onClick={closeModal}>
+                    <FaTimes />
+                </button>
+                <form onSubmit={onNoteSubmit}>
+                    <div className='form-group'>
+                        <textarea
+                            name='noteText'
+                            id='noteText'
+                            className='form-control'
+                            placeholder='Note text'
+                            value={noteText}
+                            onChange={(e) => setNoteText(e.target.value)}
+                        ></textarea>
+                    </div>
+                    <div className='form-group'>
+                        <button className='btn' type='submit'>
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </Modal>
+
             {
                 notes?.map(item => (
                     <NoteItem key={item._id} note={item} />
