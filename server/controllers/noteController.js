@@ -23,7 +23,7 @@ const getNotes = asyncHandler(async (req, res) => {
 
   const notes = await Note.find({ ticket: ticketId });
 
-  res.status(200).send({
+  res.status(200).json({
     object: {
       notes: notes,
     },
@@ -57,7 +57,7 @@ const createNotes = asyncHandler(async (req, res) => {
         user: userId
     });
   
-    res.status(200).send({
+    res.status(200).json({
       object: {
         notes: notes,
       },

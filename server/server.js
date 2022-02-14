@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const colors = require("colors");
 const dotenv = require("dotenv").config();
@@ -17,14 +18,21 @@ app.use(express.json());
 // encoded form
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/service/api/v1/public/", (req, res) => {
-  res.status(200).json({
-    message: "Welcome to the support API!",
-  });
-});
-
 app.use("/service/api/v1/users", userRoutes);
 app.use("/service/api/v1/tickets", ticketRoutes);
+
+if (process.env.NODE_END === "production") {
+  app.use(express.static(path.join(__dirname, "../client/build")));
+  app.get("*", (req, res) =>
+    res.sendFile(__dirname, "../", "client", "build", "index.html")
+  );
+} else {
+  app.get('/', (req, res) => {
+    res.status(200).json({
+      message: 'Welcome to the support desk API!'
+    })
+  })
+}
 
 app.use(errorHandler);
 
