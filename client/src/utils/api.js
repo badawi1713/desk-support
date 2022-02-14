@@ -4,10 +4,7 @@ import jwtDecode from "jwt-decode";
 import { getToken } from "./token";
 
 export const Api = axios.create({
-  baseURL:
-    process.env.REACT_APP_NODE_ENV === "production"
-      ? ""
-      : process.env.REACT_APP_BASE_URL,
+  baseURL: process.env.REACT_APP_NODE_ENV === "production" ? "" : process.env.REACT_APP_BASE_URL,
   mode: "no-cors",
   credentials: true,
   crossdomain: true,
@@ -37,10 +34,16 @@ export const AxiosSetup = async (store) => {
       return response;
     },
     (error) => {
-      if (expiredToken < currentDate) {
-        dispatch(sessionExpired());
+      if (token) {
+        if (expiredToken < currentDate) {
+          dispatch(sessionExpired());
+        } else {
+          if (error.response.status === 401) {
+            dispatch(invalidToken());
+          }
+        }
+       
       }
-      
       if (error.response.status === 401) {
         dispatch(invalidToken());
       }
