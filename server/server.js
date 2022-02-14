@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/service/api/v1/users", userRoutes);
 app.use("/service/api/v1/tickets", ticketRoutes);
 
-if (process.env.NODE_END === "production") {
+if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/build")));
   app.get("*", (req, res) =>
     res.sendFile(__dirname, "../", "client", "build", "index.html")
