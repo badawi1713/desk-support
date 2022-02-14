@@ -19,7 +19,8 @@ export const createNewTicket = createAsyncThunk(
 
   async (ticketData, thunkAPI) => {
     try {
-      return await ticketService.createNewTicket(ticketData);
+      const token = thunkAPI.getState().auth.user.token;
+      return await ticketService.createNewTicket(ticketData, token);
     } catch (error) {
       const message =
         error?.response?.data?.message || error?.message || error?.toString();
@@ -32,11 +33,11 @@ export const getTickets = createAsyncThunk(
   "ticket/get",
 
   async (_, thunkAPI) => {
-    const {ticket} = await thunkAPI.getState()
-    const { page, limit } = ticket
-    console.log(ticket)
+    const { ticket } = await thunkAPI.getState();
+    const { page, limit } = ticket;
+    const token = thunkAPI.getState().auth.user.token;
     try {
-      return await ticketService.getTickets(page, limit);
+      return await ticketService.getTickets(page, limit, token);
     } catch (error) {
       const message =
         error?.response?.data?.message || error?.message || error?.toString();
@@ -50,7 +51,8 @@ export const getTicketDetail = createAsyncThunk(
 
   async (id, thunkAPI) => {
     try {
-      return await ticketService.getTicketDetail(id);
+      const token = thunkAPI.getState().auth.user.token;
+      return await ticketService.getTicketDetail(id, token);
     } catch (error) {
       const message =
         error?.response?.data?.message || error?.message || error?.toString();
@@ -64,7 +66,8 @@ export const closeTicket = createAsyncThunk(
 
   async (id, thunkAPI) => {
     try {
-      return await ticketService.closeTicket(id);
+      const token = thunkAPI.getState().auth.user.token;
+      return await ticketService.closeTicket(id, token);
     } catch (error) {
       const message =
         error?.response?.data?.message || error?.message || error?.toString();
@@ -151,5 +154,5 @@ export const ticketSlice = createSlice({
   },
 });
 
-export const { reset,  } = ticketSlice.actions;
+export const { reset } = ticketSlice.actions;
 export default ticketSlice.reducer;

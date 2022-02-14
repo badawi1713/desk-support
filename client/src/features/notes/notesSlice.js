@@ -15,7 +15,8 @@ export const getNotes = createAsyncThunk(
 
   async (ticketId, thunkAPI) => {
     try {
-      return await notesService.getNotes(ticketId);
+      const token = thunkAPI.getState().auth.user.token
+      return await notesService.getNotes(ticketId, token);
     } catch (error) {
       const message =
         error?.response?.data?.message || error?.message || error?.toString();
@@ -29,7 +30,8 @@ export const createNotes = createAsyncThunk(
 
   async (data, thunkAPI) => {
     try {
-      return await notesService.createNotes(data);
+      const token = thunkAPI.getState().auth.user.token
+      return await notesService.createNotes(data, token);
     } catch (error) {
       const message =
         error?.response?.data?.message || error?.message || error?.toString();
