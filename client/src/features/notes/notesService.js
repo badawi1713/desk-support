@@ -1,7 +1,7 @@
 import { Api } from "utils/api";
 
 const getNotes = async (id) => {
-  const response = await Api.get(`/v1/tickets/${id}/notes`);
+  const response = await Api.get(`/service/v1/tickets/${id}/notes`);
   if (response?.data) {
     return response.data;
   }
@@ -9,7 +9,7 @@ const getNotes = async (id) => {
 
 const createNotes = async (data) => {
   const {text, id} = data
-  const response = await Api.post(`/v1/tickets/${id}/notes`, {text});
+  const response = await Api.post(`/service/v1/tickets/${id}/notes`, {text});
   if (response?.data) {
     return response.data;
   }

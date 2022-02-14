@@ -4,7 +4,7 @@ import { history } from "utils/history";
 
 // Register user
 const register = async (userData) => {
-  const response = await Api.post(`/v1/users/register`, userData);
+  const response = await Api.post(`/service/v1/users/register`, userData);
 
   if (response?.data) {
     toast.success(response.data.message);
@@ -16,7 +16,7 @@ const register = async (userData) => {
 
 // Login user
 const login = async (userData) => {
-  const response = await Api.post(`/v1/users/login`, userData);
+  const response = await Api.post(`/service/v1/users/login`, userData);
   if (response?.data) {
     toast.success(response.data.message);
     localStorage.setItem("user", JSON.stringify(response?.data?.object));
