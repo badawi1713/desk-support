@@ -34,8 +34,13 @@ export const AxiosSetup = async (store) => {
       return response;
     },
     (error) => {
-      if (expiredToken < currentDate) {
-        dispatch(sessionExpired());
+      if (token) {
+        if (expiredToken < currentDate) {
+          dispatch(sessionExpired());
+        }
+        if (error.response.status === 401) {
+          dispatch(invalidToken());
+        }
       }
       if (error.response.status === 401) {
         dispatch(invalidToken());
