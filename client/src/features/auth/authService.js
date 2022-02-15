@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 import { Api } from "utils/api";
 import { history } from "utils/history";
+import { removeToken } from "utils/token";
 
 // Register user
 const register = async (userData) => {
@@ -9,6 +10,10 @@ const register = async (userData) => {
   if (response?.data) {
     toast.success(response.data.message);
     localStorage.setItem("user", JSON.stringify(response?.data?.object));
+    localStorage.setItem(
+      "token",
+     (response?.data?.object?.token)
+    );
     history.push("/");
     return response.data;
   }
@@ -20,25 +25,29 @@ const login = async (userData) => {
   if (response?.data) {
     toast.success(response.data.message);
     localStorage.setItem("user", JSON.stringify(response?.data?.object));
+    localStorage.setItem(
+      "token",
+      (response?.data?.object?.token)
+    );
     history.push("/");
     return response.data;
   }
 };
 
 const logout = async () => {
-  localStorage.removeItem("user");
+  removeToken();
   toast.success("You have logged out");
   history.push("/login");
 };
 
 const sessionExpired = async () => {
-  localStorage.removeItem("user");
+  removeToken();
   toast.error("Your session has been expired");
   history.push("/login");
 };
 
 const invalidToken = async () => {
-  localStorage.removeItem("user");
+  removeToken();
   toast.error("Invalid Token");
   history.push("/login");
 };

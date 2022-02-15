@@ -4,7 +4,10 @@ import jwtDecode from "jwt-decode";
 import { getToken } from "./token";
 
 export const Api = axios.create({
-  baseURL: process.env.REACT_APP_NODE_ENV === "production" ? "" : process.env.REACT_APP_BASE_URL,
+  baseURL:
+    process.env.REACT_APP_NODE_ENV === "production"
+      ? ""
+      : process.env.REACT_APP_BASE_URL,
 });
 
 export const AxiosSetup = async (store) => {
@@ -39,9 +42,7 @@ export const AxiosSetup = async (store) => {
             dispatch(invalidToken());
           }
         }
-       
-      }
-      if (error.response.status === 401) {
+      } else {
         dispatch(invalidToken());
       }
 

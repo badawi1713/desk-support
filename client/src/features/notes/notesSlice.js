@@ -15,7 +15,7 @@ export const getNotes = createAsyncThunk(
 
   async (ticketId, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token
+      const token = await localStorage.getItem('token')
       return await notesService.getNotes(ticketId, token);
     } catch (error) {
       const message =
@@ -30,7 +30,7 @@ export const createNotes = createAsyncThunk(
 
   async (data, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token
+      const token = await localStorage.getItem('token')
       return await notesService.createNotes(data, token);
     } catch (error) {
       const message =

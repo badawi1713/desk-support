@@ -4,6 +4,7 @@ export const getToken = async () => {
 }
 
 export const removeToken = async () => {
-    return  window.localStorage.removeItem("user");
+ window.localStorage.removeItem("token");
+ window.localStorage.removeItem("user");
    
 }

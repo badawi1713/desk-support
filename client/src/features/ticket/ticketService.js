@@ -17,6 +17,7 @@ const createNewTicket = async (ticketData, token) => {
 };
 
 const getTickets = async (page, limit, token) => {
+  console.log(token)
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
